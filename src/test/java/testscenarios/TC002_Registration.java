@@ -3,6 +3,7 @@ package testscenarios;
 import java.util.Random;
 
 import org.testng.Assert;
+import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
 import base.BaseClass;
@@ -11,6 +12,10 @@ import pages.RegistrationPage;
 
 public class TC002_Registration extends BaseClass{
 	
+	@BeforeTest
+	public void setUp() {
+		sExcelName = "TC002";
+	}
 
 	@Test(priority = 1)
 	public void registrationFieldValidation() {
@@ -21,18 +26,18 @@ public class TC002_Registration extends BaseClass{
 		new RegistrationPage().clickUILogo();
 	}
 	
-	@Test(priority = 2)
-	public void registrationWithMandatoryFields() {
+	@Test(priority = 2,dataProvider = "TestCaseData")
+	public void registrationWithMandatoryFields(String fName,String lName,String uName,String email,String pWord) {
 		new LoginPage()
 			.clickRegisterAcc()
-			.enterFirstName("Mathan")
+			.enterFirstName(fName)
 			.selectTitle("Mr")
 			.enterMiddleName()
-			.enterLastName("Chandrasekaran")
+			.enterLastName(lName)
 			.selectGender("Male")
-			.enterUserName("Credo"+generateRandomInt(1,10000))
-			.enterEmail("credo"+generateRandomInt(1, 20000)+"@credosystemz.com")
-			.enterPassword("credo123")
+			.enterUserName(uName+generateRandomInt(1,10000))
+			.enterEmail(email+generateRandomInt(1, 20000)+"@credosystemz.com")
+			.enterPassword(pWord)
 			.clickRegisterLink()
 			.verifyUserRegistration()
 			.clickOnLogin();
